@@ -49,9 +49,6 @@ named_vec
 ##create a sequence of numbers from 15 to 100
 f <- runif(n=10, min=15, max=100)
 
-##look at f
-f
-
 ##calculate mean of the numbers in this vector which are greater than 20 and less than 60
 mean(f[f > 20 & f < 60])
 
