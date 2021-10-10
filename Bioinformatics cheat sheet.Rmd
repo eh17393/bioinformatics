@@ -1,0 +1,81 @@
+---
+title: "Bioinformatics Cheat Sheet"
+author: "Elizabeth Hoskison"
+date: "*Week 1 & Week 2*"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: true    
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+<center>
+![It's just a walk in the park](gif cat.gif)
+</center>
+
+# Feedback so far...
+
+-Add blank lines to break up chunks of code to make it easier to read
+
+-Increase code efficiency by merging multiple variables into one vector
+
+# Table of useful functions
+
+Code  | Meaning
+----  | -------
+`+`     | Add
+`-`     | Subtract
+`/`     | Divide
+`*`    | Multiply 
+`^`     | Power
+`Inf`   | Infinite
+`NaN`   | Not A Number
+`NA`    | Not Available
+`c()`   | Combine multiple variables into one vector
+`[x]`   | Pull out specific value from vector
+`""`    | Create character vectors 
+`as.factor(x)` | Converts variable names into factors 
+`==` | Equal to
+`!=` | Not equal to 
+`<` | Less than
+`>` | More than
+`<=` | Less than or equal to 
+`>=` | More than or equal to 
+`|` | Or
+`%in%` | Within
+`&` | To combine multiple logical operators 
+
+# Writing functions
+
+Allows specifying multiple arguments within one custom made function if placed within `{}` brackets 
+```{r, eval = FALSE}
+mm <- function(x){
+  ##sort vector from smallest to largest
+  ##retrieve first and last value in vector
+  MINMAX <- sort(x)[c(1,length(x))]
+  ##add `return()` to give wanted value 
+  return(MINMAX)
+}
+
+```
+
+# RMarkdown
+## Gifs/Images
+To insert images you must have the image saved in same folder as RMarkdown file
+
+`<center>
+![A caption for the image](the image name.gif)
+</center>`
+
+`<center>` before centers the image/object and `</center>` after stops that
+
+
+
+
+
+
+
