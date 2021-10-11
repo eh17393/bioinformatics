@@ -1,3 +1,5 @@
+![computer](https://user-images.githubusercontent.com/91949075/136818689-b0699624-182c-4ded-ac1c-b08d3c77a28e.png)
+
 # Bioinformatics MSc 2021-22
  Repository for workshop data and exercise answers for UoB Bioinformatics Master course
  
