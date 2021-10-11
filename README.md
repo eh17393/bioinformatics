@@ -3,7 +3,7 @@
 </p>
  
 # Bioinformatics MSc 2021-22
- Repository for workshop data and exercise answers for UoB Bioinformatics Master course
+ Repository for workshop data and exercise answers for UoB Bioinformatics Masters course
  
 ## Author
 
