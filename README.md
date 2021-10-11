@@ -1,7 +1,7 @@
-# Bioinformatics test repository
- An example repository for the Bioinformatics masters course
+# Bioinformatics MSc 2021-22
+ Repository for workshop data for UoB Bioinformatics Master course
  
-##Author
+## Author
 
 Elizabeth Hoskison
  
