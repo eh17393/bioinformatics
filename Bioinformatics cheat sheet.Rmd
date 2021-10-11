@@ -15,6 +15,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 <center>
 ![It's just a walk in the park](gif cat.gif)
+  It's Just a walk in the park
 </center>
 
 # Feedback so far...
