@@ -1,0 +1,103 @@
+---
+title: "Data Handling"
+subtitle: "**Importing and Tidying**"
+date: "*Week 3*"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: true    
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Packages to load...
+These packages are required to be able to handle data effectively in R studio: 
+
+* tidyverse
+* vroom
+* devtools
+
+These can be installed via:
+`install.packages("package name", dependencies = TRUE)`
+
+They are run via:
+`library(package name)`
+
+# Loading information into R studio
+
+The data required must be read in to R using
+
+`vroom("location of data on desktop)`
+
+And then saved as a named vector, as shown below for the workshop three data:
+```{r, eval = FALSE}
+pop_1_dat <- vroom("to_sort_pop_1.csv")
+pop_2_dat <- vroom("to_sort_pop_2.csv")
+```
+**If the data is found in the repository folder you are working in the full pathway from the desktop is not needed**
+
+# Joining data frame together
+
+Use the `join()` function to combine data sets together. Depending on what parts of the data you want to join. 
+
+```{r, eval = FALSE}
+combined_pop_data <- full_join(pop_1_dat, pop_2_dat, by = NULL, match = "all")
+```
+* `by` = if NULL will match all common variables
+
+# Converting *wide* data to *long* form data
+
+This data is wide and so must be converted to long form data for ease of processing.
+
+Use the `pivot_longer()` function and enter the column headings required: 
+```{r, eval = FALSE}
+long_pop_data <- combined_pop_data %>%
+  pivot_longer(cols = -c( species,
+                          primary_threat,
+                          secondary_threat,
+                          tertiary_threat))
+```
+* To identify the names of the columns either visualise the combined data or click the vector name in the global environment to produce a pop-out table:
+Figure 1
+
+# Renaming observation columns 
+
+As seen is figure 1 there are two columns with R assigned headings 'name' and 'value'. To change these to customised headings we use the pivot_longer function again, keeping the variables we want to remain the same in a vector, and substitute our desired names:
+```{r, eval = FALSE}
+long_pop_data <- combined_pop_data %>%
+  pivot_longer(cols = -c( species:tertiary_threat),
+               names_to = "date",
+               values_to = "abundance")
+```
+Figure 2
+
+# Splitting one column into two
+
+As seen in figure 2 the population group is joined together with the date therefore these must be separated into a separate 'population' column and 'date' column.
+
+The `tidyr` package must be loaded to be able to use the `separate` function to do this and is used as below:
+  `separate(original_column,` 
+            `c("new_heading_1", "new_heading_2"), sep = number of spaces in value before columns separated)`
+            
+In practise:
+```{r, eval = FALSE}
+library("tidyr")
+finished_data <- long_pop_data %>%
+  separate(date, 
+           c("population", "date"), sep = 6)
+```
+Figure 3 shows the finished imported and tidied data set.
+
+
+
+
+
+
+
+
+
+

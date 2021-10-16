@@ -20,9 +20,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Feedback so far...
 
--Add blank lines to break up chunks of code to make it easier to read
+- Add blank lines to break up chunks of code to make it easier to read
 
--Increase code efficiency by merging multiple variables into one vector
+- Increase code efficiency by merging multiple variables into one vector
 
 # Table of useful functions
 
