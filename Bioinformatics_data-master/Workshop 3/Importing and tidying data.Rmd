@@ -63,10 +63,11 @@ long_pop_data <- combined_pop_data %>%
 ```
 * To identify the names of the columns either visualise the combined data or click the vector name in the global environment to produce a pop-out table:
 <p align="center">
-  <img width="474" alt="combined data" src="https://user-images.githubusercontent.com/91949075/137582963-555dd6b6-3cc2-4d5c-8853-d21f18e45afe.PNG">
+  <img width="494" alt="long data" src="https://user-images.githubusercontent.com/91949075/137583229-58121f98-df95-435b-a268-4559599364ec.PNG">
   </p>
-
-Figure 1
+<p align="center">
+Figure 1. Pop-out table of combined population data 
+</p>
 
 # Renaming observation columns 
 
@@ -77,7 +78,12 @@ long_pop_data <- combined_pop_data %>%
                names_to = "date",
                values_to = "abundance")
 ```
-Figure 2
+<p align="center">
+<img width="527" alt="pre split column data" src="https://user-images.githubusercontent.com/91949075/137583272-03a40b6d-2f74-4a09-816c-d819643c6ead.PNG">
+</p>
+<p align="center">
+Figure 2. Pop-out table of renamed columns 
+</p>
 
 # Splitting one column into two
 
@@ -94,7 +100,12 @@ finished_data <- long_pop_data %>%
   separate(date, 
            c("population", "date"), sep = 6)
 ```
-Figure 3 shows the finished imported and tidied data set.
+<p align="center">
+<img width="551" alt="finished data" src="https://user-images.githubusercontent.com/91949075/137583325-3d3599c7-7c17-466c-85ce-92eeb9262edd.PNG">
+</p>
+<p align="center">
+Figure 3. Pop-out table of tidied data set 
+</p>
 
 
 
