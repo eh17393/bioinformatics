@@ -62,6 +62,10 @@ long_pop_data <- combined_pop_data %>%
                           tertiary_threat))
 ```
 * To identify the names of the columns either visualise the combined data or click the vector name in the global environment to produce a pop-out table:
+<p align="center">
+  <img width="474" alt="combined data" src="https://user-images.githubusercontent.com/91949075/137582963-555dd6b6-3cc2-4d5c-8853-d21f18e45afe.PNG">
+  </p>
+
 Figure 1
 
 # Renaming observation columns 
