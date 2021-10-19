@@ -40,7 +40,7 @@ pop_2_dat <- vroom("to_sort_pop_2.csv")
 ```
 **If the data is found in the repository folder you are working in the full pathway from the desktop is not needed**
 
-# Joining data frame together
+# Joining data frames together
 
 Use the `join()` function to combine data sets together. Depending on what parts of the data you want to join. 
 
@@ -68,6 +68,14 @@ long_pop_data <- combined_pop_data %>%
 <p align="center">
 Figure 1. Pop-out table of combined population data 
 </p>
+
+# Changing column headings 
+
+To edit column headings use the `name()` function, stating the location of the headings to be changed in `[]` and then creating a list of the new names:
+
+```{r, eval = FALSE}
+names(covid_dat)[1:2] <- c("Province.State", "Country.Region")
+```
 
 # Renaming observation columns 
 

@@ -266,8 +266,8 @@ div.tocify {
 pop_2_dat &lt;- vroom(&quot;to_sort_pop_2.csv&quot;)</code></pre>
 <p><strong>If the data is found in the repository folder you are working in the full pathway from the desktop is not needed</strong></p>
 </div>
-<div id="joining-data-frame-together" class="section level1" number="3">
-<h1 number="3"><span class="header-section-number">3</span> Joining data frame together</h1>
+<div id="joining-data-frames-together" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Joining data frames together</h1>
 <p>Use the <code>join()</code> function to combine data sets together. Depending on what parts of the data you want to join.</p>
 <pre class="r"><code>combined_pop_data &lt;- full_join(pop_1_dat, pop_2_dat, by = NULL, match = &quot;all&quot;)</code></pre>
 <ul>
@@ -293,8 +293,13 @@ Figure 1. Pop-out table of combined population data
 </p></li>
 </ul>
 </div>
-<div id="renaming-observation-columns" class="section level1" number="5">
-<h1 number="5"><span class="header-section-number">5</span> Renaming observation columns</h1>
+<div id="changing-column-headings" class="section level1" number="5">
+<h1 number="5"><span class="header-section-number">5</span> Changing column headings</h1>
+<p>To edit column headings use the <code>name()</code> function, stating the location of the headings to be changed in <code>[]</code> and then creating a list of the new names:</p>
+<pre class="r"><code>names(covid_dat)[1:2] &lt;- c(&quot;Province.State&quot;, &quot;Country.Region&quot;)</code></pre>
+</div>
+<div id="renaming-observation-columns" class="section level1" number="6">
+<h1 number="6"><span class="header-section-number">6</span> Renaming observation columns</h1>
 <p>As seen is figure 1 there are two columns with R assigned headings ‘name’ and ‘value’. To change these to customised headings we use the pivot_longer function again, keeping the variables we want to remain the same in a vector, and substitute our desired names:</p>
 <pre class="r"><code>long_pop_data &lt;- combined_pop_data %&gt;%
   pivot_longer(cols = -c( species:tertiary_threat),
@@ -307,8 +312,8 @@ Figure 1. Pop-out table of combined population data
 Figure 2. Pop-out table of renamed columns
 </p>
 </div>
-<div id="splitting-one-column-into-two" class="section level1" number="6">
-<h1 number="6"><span class="header-section-number">6</span> Splitting one column into two</h1>
+<div id="splitting-one-column-into-two" class="section level1" number="7">
+<h1 number="7"><span class="header-section-number">7</span> Splitting one column into two</h1>
 <p>As seen in figure 2 the population group is joined together with the date therefore these must be separated into a separate ‘population’ column and ‘date’ column.</p>
 <p>The <code>tidyr</code> package must be loaded to be able to use the <code>separate</code> function to do this and is used as below: <code>separate(original_column,</code> <code>c(&quot;new_heading_1&quot;, &quot;new_heading_2&quot;), sep = number of spaces in value before columns separated)</code></p>
 <p>In practise:</p>
