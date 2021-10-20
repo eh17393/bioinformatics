@@ -41,6 +41,25 @@ finished_data <- long_pop_data %>%
 
 ##look at vector
 finished_data
-  
-  
+
+
+##could all be done in one block of code 
+long_spp <- combined_pop_data %>%
+  pivot_longer(cols = -c( species,
+                          primary_threat,
+                          secondary_threat,
+                          tertiary_threat),
+               names_to = c("population", "date"),
+               names_pattern = "(.*)_(.*)",
+               values_drop_na = F,
+               values_to = "abundance")
+long_spp
+
+
+
+
+
+
+
+
   

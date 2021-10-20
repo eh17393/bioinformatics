@@ -260,7 +260,7 @@ div.tocify {
 <div id="loading-information-into-r-studio" class="section level1" number="2">
 <h1 number="2"><span class="header-section-number">2</span> Loading information into R studio</h1>
 <p>The data required must be read in to R using</p>
-<p><code>vroom(&quot;location of data on desktop)</code></p>
+<p><code>vroom(&quot;location of data on desktop/location of data in github)</code> * Prefered location is public github as this makes it accessible for everyone</p>
 <p>And then saved as a named vector, as shown below for the workshop three data:</p>
 <pre class="r"><code>pop_1_dat &lt;- vroom(&quot;to_sort_pop_1.csv&quot;)
 pop_2_dat &lt;- vroom(&quot;to_sort_pop_2.csv&quot;)</code></pre>
@@ -327,6 +327,24 @@ finished_data &lt;- long_pop_data %&gt;%
 <p align="center">
 Figure 3. Pop-out table of tidied data set
 </p>
+</div>
+<div id="condenscing-actions-into-one-block-of-code" class="section level1" number="8">
+<h1 number="8"><span class="header-section-number">8</span> Condenscing actions into one block of code</h1>
+<p>Using tidyverse functions:</p>
+<ul>
+<li><code>names_pattern =</code> and stating where in the string is to be separated</li>
+<li><code>values_drop_na = F</code> to remove rows containing missing data</li>
+</ul>
+<pre class="r"><code>long_spp &lt;- combined_pop_data %&gt;%
+  pivot_longer(cols = -c( species,
+                          primary_threat,
+                          secondary_threat,
+                          tertiary_threat),
+               names_to = c(&quot;population&quot;, &quot;date&quot;),
+               names_pattern = &quot;(.*)_(.*)&quot;,
+               values_drop_na = F,
+               values_to = &quot;abundance&quot;)
+long_spp</code></pre>
 </div>
 
 

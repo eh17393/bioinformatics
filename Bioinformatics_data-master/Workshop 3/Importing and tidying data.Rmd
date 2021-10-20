@@ -31,7 +31,8 @@ They are run via:
 
 The data required must be read in to R using
 
-`vroom("location of data on desktop)`
+`vroom("location of data on desktop/location of data in github)`
+* Prefered location is public github as this makes it accessible for everyone 
 
 And then saved as a named vector, as shown below for the workshop three data:
 ```{r, eval = FALSE}
@@ -69,7 +70,7 @@ long_pop_data <- combined_pop_data %>%
 Figure 1. Pop-out table of combined population data 
 </p>
 
-# Changing column headings 
+# Changing column headings
 
 To edit column headings use the `name()` function, stating the location of the headings to be changed in `[]` and then creating a list of the new names:
 
@@ -115,6 +116,24 @@ finished_data <- long_pop_data %>%
 Figure 3. Pop-out table of tidied data set 
 </p>
 
+# Condenscing actions into one block of code 
+Using tidyverse functions:
+
+* `names_pattern = ` and stating where in the string is to be separated
+* `values_drop_na = F` to remove rows containing missing data
+
+```{r, eval = FALSE}
+long_spp <- combined_pop_data %>%
+  pivot_longer(cols = -c( species,
+                          primary_threat,
+                          secondary_threat,
+                          tertiary_threat),
+               names_to = c("population", "date"),
+               names_pattern = "(.*)_(.*)",
+               values_drop_na = F,
+               values_to = "abundance")
+long_spp
+```
 
 
 
