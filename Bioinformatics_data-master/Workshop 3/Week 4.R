@@ -223,7 +223,7 @@ by_country + geom_point(aes(col = Country.Region)) + theme(legend.position = "no
 
 
 ##make a vector of countries we want to look at:
-selec_countries <- c("United Kingdom", "Chine", "US", "Italy", "France", "Germany")
+selec_countries <- c("United Kingdom", "China", "US", "Italy", "France", "Germany")
 ##use this to filter by for our plot. here using the %in% operature:
 sel_country_plot <- ggplot(data = covid_w_pop %>%
                              filter(Country.Region %in% selec_countries),
