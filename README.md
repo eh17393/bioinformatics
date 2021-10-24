@@ -21,6 +21,8 @@ Elizabeth Hoskison
     - Two spreadsheets containing plant populations and their main reasons for being endangered 
       - Code merging spreadsheets and formating the data 
       - Rmarkdown explaining how the above was done for future reference
+      - Week 4 lesson work
+      - Week 4 homework
 
 
 
