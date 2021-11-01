@@ -51,6 +51,8 @@ Code  | Meaning
 `|` | Or
 `%in%` | Within
 `&` | To combine multiple logical operators 
+`$` | To quick access data `(our_data$Day)` OR add column to data `(our_data$location <- "United Kingdom")`
+`%>%` | Applies functions to data `(my_data %>% function_1() %>% function_2())`
 
 # Writing functions
 
