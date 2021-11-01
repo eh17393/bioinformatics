@@ -1,7 +1,7 @@
 ---
 title: "Bioinformatics Cheat Sheet"
 author: "Elizabeth Hoskison"
-date: "*Week 1 & Week 2*"
+date: "*Week 1 & Week 2 & 3*"
 output: 
   html_document:
     toc: true
