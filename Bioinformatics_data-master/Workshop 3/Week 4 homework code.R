@@ -10,7 +10,7 @@ pop_2_dat <- vroom("https://raw.githubusercontent.com/eh17393/bioinformatics/mai
 ##join two data frames together in full into one vector
 combined_pop_data <- full_join(pop_1_dat, pop_2_dat, by = NULL, match = "all")
 
-##coonvert data to long form, rename observation columns, split pop and date column into two and remove any NA values:
+##convert data to long form, rename observation columns, split pop and date column into two and remove any NA values:
 long_spp <- combined_pop_data %>%
   pivot_longer(cols = -c( species,
                           primary_threat,
