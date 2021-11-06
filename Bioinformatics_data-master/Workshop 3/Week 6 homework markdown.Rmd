@@ -1,0 +1,206 @@
+---
+title: "Week 6 Homework Rmarkdown"
+author: "**Statistical Analysis**"
+date: "*Week 6*"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: true    
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Tokyo Olympics 2021 Medal Data
+```{r, echo = FALSE, results = 'hide', message = FALSE}
+library(tidyverse)
+library(vroom)
+library(usethis)
+library(devtools)
+library(lubridate)
+library(multcomp)
+```
+
+
+Read in the Tokyo 2021 olympic medal data from github
+```{r, eval = FALSE}
+medal_data <- vroom("https://raw.githubusercontent.com/chrit88/Bioinformatics_data/master/Workshop%205/Tokyo%202021%20medals.csv")
+```
+```{r, echo = FALSE, results = 'hide', message = FALSE}
+medal_data <- vroom("https://raw.githubusercontent.com/chrit88/Bioinformatics_data/master/Workshop%205/Tokyo%202021%20medals.csv")
+```
+
+```{r}
+medal_data
+```
+
+Add GDP column for all countries by calling `library(wbstats)`
+```{r, echo = FALSE, results = 'hide', message = FALSE}
+library(wbstats)
+```
+Extract GDP data for all countries for 2020 (no 2021 data)
+```{r}
+all_GDP_data <- wb_data(indicator = "NY.GDP.MKTP.CD",
+                        start_date = 2020,
+                        end_date = 2020)
+all_GDP_data
+```
+Rename all_GDP_data column 5 to GDP
+```{r}
+names(all_GDP_data)[5] <- "GDP"
+all_GDP_data
+```
+Ensure all countries are identified as the correct country before merging with world data by calling `library(countrycode)`
+```{r,  echo = FALSE, results = 'hide', message = FALSE}
+library(countrycode) 
+```
+Add a column to medal data containing the country code
+```{r}
+medal_data$code <- countrycode(medal_data$Country, 
+                               origin = "country.name",
+                               destination = "iso3c")
+medal_data
+```
+Look at head of new dataset
+```{r}
+head(medal_data, 3)
+```
+Correct China
+```{r}
+medal_data$code[2] <- "CHN"
+head(medal_data, 3)
+```
+Select just iso3c and GDP column
+Use dplyr::select as conflict with MASS package
+```{r}
+head(all_GDP_data %>% dplyr::select( iso3c, GDP ))
+```
+Join two data sets 
+```{r}
+medal_GDP <- left_join(medal_data, 
+                         all_GDP_data %>% dplyr::select(iso3c, GDP),
+                         by = c("code" = "iso3c"))
+medal_GDP
+```
+Drop rows with NA values
+```{r}
+medal_GDP <- medal_GDP %>% drop_na()
+```
+As gold medal frequency essentially determines table ranking, plot gold medals won against country GDP
+```{r}
+p1 <- ggplot(medal_GDP, aes(x = GDP,
+                             y = Gold)) +
+  geom_point() +
+  geom_line() +
+  theme_bw() +
+  ylab("Gold Medals Won") +
+  xlab("GDP ($)")
+
+p1 <- p1 + geom_smooth(method="loess")
+
+p1 <- p1 + ggtitle("Country GDP versus Golds won at Tokyo 2021")
+p1
+```
+Fit a glm()
+```{r}
+mod_gold_1 <- glm(Gold ~ GDP,
+                  data = medal_GDP,
+                  family = "gaussian")
+mod_gold_1
+```
+Plot diagnostic plots
+```{r}
+plot(mod_gold_1)
+```
+Summarise the model outputs 
+```{r}
+summary(mod_gold_1)
+```
+Significant impact of GDP on gold medals won: higher GDP correlates with higher gold medal count.
+
+
+Fit a glm with a poisson distribution to see if better model fit.
+```{r}
+mod_gold_2 <- glm(Gold ~ GDP,
+                  data = medal_GDP,
+                  family = "poisson")
+plot(mod_gold_2)
+```
+
+Not good fit as normal Q-Q plot very ill-fitting plus points are outside 1 lines on residuals vs leverage graph
+
+# Iris flower data
+
+Load the iris data set
+```{r}
+data("iris")
+```
+plot the Sepal.Width data by Sepal.Length and Species 
+```{r}
+ggplot( iris, aes( x = Petal.Length, y = Sepal.Width)) +
+  geom_jitter(aes(col = Species)) +
+  theme_bw()+
+  ggtitle("How petal length impacts sepal width broken down by species")
+```
+Fit a glm()
+```{r}
+mod_petal <- glm(Sepal.Width ~ Petal.Length*Species,
+                data = iris,
+                family = "gaussian")
+mod_petal
+```
+Plot model
+```{r}
+plot(mod_petal)
+```
+
+Summarise model outputs
+```{r}
+summary(mod_petal)
+```
+To achieve a better fit transform response variable Sepal.Width with log10()
+```{r}
+log_sepal_width <- log(iris$Sepal.Width)
+```
+
+Add log_sepal_width column to dataframe
+```{r}
+iris <- iris %>% mutate(log_sepal_width)
+```
+Plot the log_sepal.width data by sepal.length and species 
+```{r}
+ggplot( iris, aes( x = Petal.Length, y = log_sepal_width)) +
+  geom_jitter(aes(col = Species)) +
+  theme_bw()+
+  ggtitle("How petal length impacts the log10 of sepal width broken down by species")
+
+```
+Fit a glm()
+```{r}
+mod_log <- glm(log_sepal_width ~ Petal.Length*Species,
+                 data = iris,
+                 family = "gaussian")
+mod_log
+```
+Plot model
+```{r}
+plot(mod_log)
+```
+
+Summarise model outputs
+```{r}
+summary(mod_log)
+```
+More significant than previous glm showing versicolor and and virginica affected by sepal width however no overall effect of petal.length.
+
+
+
+
+
+
+
+
+
