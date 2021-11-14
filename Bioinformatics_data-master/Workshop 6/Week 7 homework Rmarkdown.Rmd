@@ -1,0 +1,281 @@
+---
+title: "Week 7 homework Rmarkdown"
+author: "**Statistical Analysis**"
+date: "*Week 7*"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: true    
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Dataset 1 analysis
+
+```{r, echo = FALSE, results = 'hide', message = FALSE}
+library(tidyverse)
+library(vroom)
+library(usethis)
+library(devtools)
+library(lubridate)
+library(multcomp)
+library(scales)
+library(glmmTMB)
+library(DHARMa)
+library(fitdistrplus)
+library(MuMIn)
+library(MASS)
+library(viridisLite)
+library(viridis)
+library(ggplot2)
+
+```
+
+Read in dataset 1 from github
+```{r, eval = FALSE}
+dataset_1 <- vroom("https://raw.githubusercontent.com/eh17393/bioinformatics/main/Bioinformatics_data-master/Workshop%206/data%201.csv")
+
+```
+```{r, echo = FALSE, results = 'hide', message = FALSE}
+dataset_1 <- vroom("https://raw.githubusercontent.com/eh17393/bioinformatics/main/Bioinformatics_data-master/Workshop%206/data%201.csv")
+```
+```{r}
+dataset_1
+```
+
+## Visualise dataset 1 with x1
+```{r}
+ggplot(dataset_1, aes(x = y, y = x1)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+No significant correlation
+
+## Visualise dataset 1 with x2
+```{r}
+ggplot(dataset_1, aes(x = y, y = x2)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+Potentially a significant positive correlation 
+
+Fit a glm with gaussian distribution and plot
+```{r}
+mod1_d1x2 <- glm(x2 ~ y, data = dataset_1, family = "gaussian")
+plot(mod1_d1x2)
+```
+Summarise mod 1
+```{r}
+summary(mod1_d1x2)
+```
+Significant intercept however plots are not perfect therefore test with other models with gaussian distribution
+
+Fit a glm with a gaussian distribution with a log link
+```{r}
+mod2_d1x2 <- glm(x2 ~ y,
+                   data = dataset_1,
+                   family = gaussian(link = "log"))
+plot(mod2_d1x2)
+```
+Fit glm with a guassian model with an inverse link
+```{r}
+mod3_d1x2 <- glm(x2 ~ y,
+                   data = dataset_1,
+                   family = gaussian(link = "inverse"))
+plot(mod3_d1x2)
+```
+Compare models with AIC and rank
+```{r}
+library(gamlr)
+##compare the models 
+AIC_mods <- data.frame(model = c("mod1_d1x2", "mod2_d1x2", "mod3_d1x2"),
+                       AICc = c(AICc(mod1_d1x2), AICc(mod2_d1x2), AICc(mod3_d1x2)))
+
+##rank the models
+AIC_mods[order(AIC_mods$AICc),]
+```
+Mod 1 the best therefore gaussian error distribution with significant x2 
+
+## Visualise dataset 1 with x3
+```{r}
+ggplot(dataset_1, aes(x = y, y = x3)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+Potentially a significant correlation with y 
+
+Fit a glm with gaussian distribution and plot
+```{r}
+mod1_d1x3 <- glm(x3 ~ y, data = dataset_1, family = "gaussian")
+plot(mod1_d1x3)
+```
+Summarise mod 1 
+```{r}
+summary(mod1_d1x3)
+```
+Significant correlation with intercept therefore x3 is significant with gaussian error distribution
+
+## Visualise dataset 1 with x4
+```{r}
+ggplot(dataset_1, aes(x = y, y = x4)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+No significant correlation 
+
+
+# Dataset 2 analysis
+
+Read in dataset 2 from github
+```{r, eval = FALSE}
+dataset_2 <- vroom("https://raw.githubusercontent.com/eh17393/bioinformatics/main/Bioinformatics_data-master/Workshop%206/data%202.csv")
+```
+```{r, echo = FALSE, results = 'hide', message = FALSE}
+dataset_2 <- vroom("https://raw.githubusercontent.com/eh17393/bioinformatics/main/Bioinformatics_data-master/Workshop%206/data%202.csv")
+```
+```{r}
+dataset_2
+```
+## Visualise dataset_2 with x1
+```{r}
+ggplot(dataset_2, aes(x = y, y = x1)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+Fit a glm with gaussian distribution and plot 
+```{r}
+mod1_d2x1 <- glm(x1 ~ y, data = dataset_2, family = "gaussian")
+plot(mod1_d2x1)
+```
+Normal Q-Q plot doesn't fit very well therefore try with other glms
+
+Fit glm with poisson distribution
+```{r}
+mod2_d2x1 <- glm(x1 ~ y, data = dataset_2, family = "poisson")
+plot(mod2_d2x1)
+```
+Fit a glm with a gaussian distribution with a log link and plot
+```{r}
+mod3_d2x1 <- glm(x1 ~ y,
+               data = dataset_2,
+               family = gaussian(link = "log"))
+plot(mod3_d2x1)
+```
+
+Fit glm with a guassian model with an inverse link
+```{r}
+mod4_d2x1 <- glm(x1 ~ y,
+               data = dataset_2,
+               family = gaussian(link = "inverse"))
+plot(mod4_d2x1)
+```
+
+Compare and rank models with AIC
+```{r}
+##compare the models 
+AIC_modsd2 <- data.frame(model = c("mod1_d2x1", "mod2_d2x1", "mod3_d2x1", "mod4_d2x1"),
+                       AICc = c(AICc(mod1_d2x1), AICc(mod2_d2x1), AICc(mod3_d2x1), AICc(mod4_d2x1)))
+
+##rank the models
+AIC_modsd2[order(AIC_mods$AICc),]
+```
+Mod 1 is the best fit showing x1 is significant with a gaussian error distribution
+
+
+## Visualise dataset_2 with x2 
+```{r}
+ggplot(dataset_2, aes(x = y, y = x2)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+## Visualise dataset_2 with x3
+```{r}
+ggplot(dataset_2, aes(x = y, y = x3)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+
+
+
+# Dataset 4 analysis
+
+Read in dataset 4 from github
+```{r, eval = FALSE}
+dataset_4 <- vroom("https://raw.githubusercontent.com/eh17393/bioinformatics/main/Bioinformatics_data-master/Workshop%206/data%204.csv")
+```
+```{r, echo = FALSE, results = 'hide', message = FALSE}
+dataset_4 <- vroom("https://raw.githubusercontent.com/eh17393/bioinformatics/main/Bioinformatics_data-master/Workshop%206/data%204.csv")
+```
+```{r}
+dataset_4
+```
+## Visualise dataset 4 with x1
+```{r}
+ggplot(dataset_4, aes(x = y, y = x1)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+Shows a potentially strong positive correlation with y
+
+Fit a glm with gaussian distribution, plot and summarise
+```{r}
+mod1_d4x1 <- glm(x1 ~ y, data = dataset_4, family = "gaussian")
+plot(mod1_d4x1)
+```
+```{r}
+summary(mod1_d4x1)
+```
+Fit glm with poisson distribution, plot and summarise
+```{r}
+mod2_d4x1 <- glm(x1 ~ y, data = dataset_4, family = "poisson")
+plot(mod2_d4x1)
+```
+The residuals vs leverage graph is better than gaussian
+
+```{r}
+summary(mod2_d4x1)
+```
+Not significant therefore log x1 and summarise
+```{r}
+mod2log_d4x1 <- glm(log10(x1) ~ y, data = dataset_4, family = "poisson")
+summary(mod2log_d4x1)
+```
+x1 is significant with poisson error distribution and log link function
+
+## Visualise dataset_4 with x2
+```{r}
+ggplot(dataset_4, aes(x = y, y = x2)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+A clear positive correlation with y 
+
+Fit glm with log link and poisson distribution and summarise
+```{r}
+mod2log_d4x2 <- glm(log10(x2) ~ y, data = dataset_4, family = "poisson")
+summary(mod2log_d4x2)
+```
+x2 is significant with poisson error distribution and log link function
+
+## Visualise dataset_4 with x3
+```{r}
+ggplot(dataset_4, aes(x = y, y = x3)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+No clear correlation
+
+
+
+
+
+
+
+
+
